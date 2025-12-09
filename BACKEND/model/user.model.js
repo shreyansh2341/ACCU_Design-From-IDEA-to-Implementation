@@ -12,10 +12,14 @@ const userSchema = new mongoose.Schema({
         unique: true,
         validate: [validator.isEmail, 'Please enter a valid email address'],
     },
+    emailChangeOTP: String,
+    emailChangeOTPExpiry: Date,
+    emailChangeNewEmail: String,
+
     password: {
         type: String,
         required: function () {
-            return !this.isGoogleLogin; // only required if NOT Google login
+            return !this.isGoogleLogin;
         },
         select: false,
     },
@@ -68,7 +72,41 @@ const userSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-    }
+    },
+    isActive: { type: Boolean, default: true },
+
+    photo: {
+        public_id: String,
+        url: String,
+    },
+
+    companyName: { type: String },
+    companyAddress: { type: String },
+
+    socials: {
+        facebook: { type: String },
+        instagram: { type: String },
+        linkedin: { type: String },
+        website: { type: String },
+    },
+
+    // For profile update OTP flow
+    profileOtp: { type: String },
+    profileOtpExpiry: { type: Date },
+    pendingProfileUpdate: {
+        name: String,
+        email: String,
+        phone: String,
+        companyName: String,
+        companyAddress: String,
+        socials: {
+            facebook: String,
+            instagram: String,
+            linkedin: String,
+            website: String,
+        },
+    },
+
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

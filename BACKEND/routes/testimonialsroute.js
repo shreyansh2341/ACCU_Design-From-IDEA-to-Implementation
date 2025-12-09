@@ -10,7 +10,7 @@ const {authenticatedUser} = require('../middleware/authUser');
 const { isAdmin } = require('../middleware/authUser');
 
 const testimonialsrouter= express.Router();
-testimonialsrouter.post('/create', authenticatedUser,isAdmin("admin"), createReviewPost);
+testimonialsrouter.post('/create-review', authenticatedUser,isAdmin("admin"), createReviewPost);
 testimonialsrouter.delete('/delete-review-posts/:id', authenticatedUser,isAdmin("admin"), deleteReviewPost);
 testimonialsrouter.get('/all-review-posts',authenticatedUser, getAllReviews);
 testimonialsrouter.get('/single-review-post/:id', authenticatedUser, getSingleReview);

@@ -48,7 +48,7 @@ const MediaDetails = () => {
         {/* Media Image */}
         <div className="relative h-64 sm:h-96 overflow-hidden rounded-xl shadow-md mb-6 border-4 border-blue-200">
           <img
-            src={media.mediaImage.url}
+            src={media.media.url}
             alt={media.event}
             className="w-full h-full object-cover"
           />

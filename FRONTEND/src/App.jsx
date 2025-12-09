@@ -7,10 +7,9 @@ import Register from './pages/register.jsx';
 import Contact from './pages/Contact.jsx';
 import AdminDashboard from './pages/Dashboard.jsx';
 import DashboardRouter from './pages/DashboardRouter';
-import VendorDashboard from './pages/VendorDashboard.jsx';
-import UserDashboard from './pages/UserDashboard.jsx';
+// import VendorDashboard from './pages/VendorDashboard.jsx';
+import UserDashboard from './user-dashboard/UserDashboard.jsx';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { useAuth } from './context/AuthProvider.jsx';
 import { Toaster } from 'react-hot-toast';
 import AboutUs from './pages/About-Us.jsx';
 import OurServices from './pages/Our-Services.jsx';
@@ -34,6 +33,7 @@ import UpdateBlog from './dashboard/Updateblog.jsx'
 import UpdatePost from './dashboard/UpdatePost.jsx'
 import UpdateReview from './dashboard/UpdateReview.jsx'
 import CreateBlog from './dashboard/createblog.jsx';
+import AutoGenerateBlog from './dashboard/AutoGenerateBlog.jsx';
 import CreatePost from './dashboard/createPost.jsx';
 import CreateReview from './dashboard/createTestimonials.jsx';
 import Myblogs from './dashboard/myblogs.jsx';
@@ -65,6 +65,14 @@ import DesignTipsReduceLeadTime from './pages/DesignTipsReduceLeadTime.jsx';
 import LoginSuccess from '@/pages/LoginSuccess.jsx';
 import PreRegister from "./pages/PreRegister";
 import VerifyOtp from './components/VerifyOtp.jsx';
+import MyProfile from "./user-dashboard/MyProfile.jsx";
+import AdminOrders from "@/admin-dashboard/AdminOrders.jsx";
+import AdminOrderDetail from "@/admin-dashboard/AdminOrderDetail.jsx";
+import AdminUsers from "@/admin-dashboard/AdminUsers.jsx";
+import AdminChats from "./admin-dashboard/AdminChats.jsx";
+import AdminCancelRequests from "./admin-dashboard/AdminCancelRequests.jsx";
+import AdminOrderReviews from './admin-dashboard/AdminOrderReviews.jsx';
+
 
 function App() {
 
@@ -102,13 +110,14 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+        {/* <Route path="/vendor-dashboard" element={<VendorDashboard />} /> */}
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/dashboard" element={<DashboardRouter />} />
         <Route exact path="/my-blogs" element={<Myblogs />} />
         <Route exact path="/all-posts" element={<AllPosts />} />
         <Route exact path="/get-quote" element={<GetQuote />} />
         <Route exact path="/create-blog" element={<CreateBlog />} />
+        <Route exact path="/auto-generate" element={<AutoGenerateBlog />} />
         <Route exact path="/create-post" element={<CreatePost />} />
         <Route exact path="/create-review-post" element={<CreateReview />} />
         <Route exact path="/update-blog/:id" element={<UpdateBlog />} />
@@ -140,6 +149,14 @@ function App() {
         <Route path="/login-success" element={<LoginSuccess />} />
         <Route path="/pre-register" element={<PreRegister />} />
         <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/manage-orders" element={<AdminOrders />} />
+        <Route path="/admin/order/:id" element={<AdminOrderDetail />} />
+        <Route path="/manage-users" element={<AdminUsers />} />
+        <Route path="/manage-chats" element={<AdminChats />} />
+        <Route path="/manage-cancellations" element={<AdminCancelRequests />} />
+        <Route path="/admin/reviews" element={<AdminOrderReviews />} />
+
       </Routes>
       <Toaster />
       {!hideNavbarFooter && <Footer />}

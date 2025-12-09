@@ -1,6 +1,8 @@
 const { default: mongoose } = require("mongoose");
 const Review = require("../model/testimonials.model");
 const cloudinary = require('cloudinary').v2;
+const streamifier = require('streamifier');
+
 
 const createReviewPost = async (req, res) => {
   try {
@@ -60,12 +62,10 @@ const deleteReviewPost = async (req, res) => {
     if (!review) {
       return res.status(404).json({ message: 'Review Post not found' });
     }
-    // Delete the image from Cloudinary
     const cloudinaryResponse = await cloudinary.uploader.destroy(review.reviewImage.public_id);
     if (cloudinaryResponse.result !== 'ok') {
       return res.status(500).json({ message: 'Error deleting image from Cloudinary' });
     }
-    // Delete the blog from the database
     await Review.findByIdAndDelete(id);
     res.status(200).json({ message: 'Review Post deleted successfully' });
   }
@@ -130,10 +130,8 @@ const updateReviewPost = async (req, res) => {
     };
 
     if (req.files && req.files.reviewImage) {
-      // Delete old image
       await cloudinary.uploader.destroy(review.reviewImage.public_id);
 
-      // Upload new image
       const result = await cloudinary.uploader.upload(req.files.reviewImage.tempFilePath, {
         folder: 'review_Images',
         use_filename: true,

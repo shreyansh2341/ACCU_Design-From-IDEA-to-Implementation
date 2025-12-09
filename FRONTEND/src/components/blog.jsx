@@ -24,8 +24,10 @@ const Blog = () => {
 
   return (
     <div className="px-4 md:px-10 py-8">
+      <div className=''>
       {/* 🔥 Trending Section */}
       <Trending />
+      </div>
 
       {/* 📰 All Blogs */}
       <h1 className="text-3xl font-bold text-center text-[#2479C2] mb-8">All Blogs</h1>
@@ -135,7 +137,7 @@ const Blog = () => {
 
       {/* ℹ️ About Section */}
       <div className="mt-16 p-6 bg-blue-50 rounded-xl shadow-inner border border-blue-100 max-w-5xl mx-auto text-center">
-        <h2 className="text-2xl font-bold text-blue-800 mb-3">About Our Blog</h2>
+        <h2 className="text-3xl font-bold text-[#2479C2] mb-3">About Our Blog</h2>
         <p className="text-gray-700 leading-relaxed text-base">
           Explore the latest updates, tutorials, industry insights, and personal stories from our talented
           creators and team. Each blog is carefully curated to inform, inspire, and engage our readers.

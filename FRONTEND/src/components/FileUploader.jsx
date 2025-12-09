@@ -2,132 +2,56 @@ import React, { useState, useRef } from 'react';
 import { FaCloudUploadAlt, FaFileAlt, FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
-const REACT_APP_BACKEND_URL = import.meta.env.VITE_WEBSITE_URL || 'http://localhost:4000';
-
-const FileUploader = ({ onFileUpload }) => {
+const FileUploader = ({ onFilesSelected }) => {
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
 
-  const uploadToServer = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
-      
-      const res = await fetch(`${REACT_APP_BACKEND_URL}/api/drive/upload`, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
-
-      console.log('Upload response status:', res.status, res.statusText);
-
-      if (!res.ok) {
-        // Try to get error message from response
-        let errorMessage = `HTTP ${res.status}: ${res.statusText}`;
-        try {
-          const errorData = await res.json();
-          errorMessage = errorData.message || errorData.error || errorMessage;
-        } catch {
-          // If JSON parsing fails, use default error message
-        }
-        console.error('Upload failed:', errorMessage);
-        toast.error(`Upload failed: ${errorMessage}`);
-        return null;
-      }
-
-      const data = await res.json();
-      console.log('Upload response data:', data);
-      
-      if (data.success && data.link) {
-        toast.success(`${file.name} uploaded successfully!`);
-        return { name: file.name, link: data.link };
-      } else {
-        const errorMsg = data.message || 'Unknown error occurred';
-        console.error('Upload response error:', errorMsg);
-        toast.error(`Upload failed: ${errorMsg}`);
-        return null;
-      }
-    } catch (err) {
-      console.error('Upload error:', err);
-      toast.error(`Network error: ${err.message}`);
-      return null;
-    }
-  };
-
-  const handleValidFiles = async (newFiles) => {
-    console.log('Processing files:', newFiles.length);
-    
-    // Validate file size and type
+  // validate file size & type
+  const validateFiles = (newFiles) => {
     const allowedTypes = [
       'application/pdf',
-      'image/jpeg', 
+      'image/jpeg',
       'image/png',
       'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     ];
-    
-    const maxSize = 50 * 1024 * 1024; // 50MB to match backend
-    
-    const validFiles = [];
-    const invalidFiles = [];
-    
-    newFiles.forEach(file => {
+    const maxSize = 50 * 1024 * 1024; // 50MB
+
+    const valid = [];
+    newFiles.forEach((file) => {
       if (file.size > maxSize) {
-        invalidFiles.push(`${file.name}: File too large (max 50MB)`);
+        toast.error(`${file.name}: File too large (max 50MB)`);
       } else if (!allowedTypes.includes(file.type)) {
-        invalidFiles.push(`${file.name}: Invalid file type`);
+        toast.error(`${file.name}: Invalid file type`);
       } else {
-        validFiles.push(file);
+        valid.push(file);
       }
     });
-    
-    // Show validation errors
-    if (invalidFiles.length > 0) {
-      invalidFiles.forEach(error => toast.error(error));
-    }
-    
-    if (validFiles.length === 0) {
-      console.log('No valid files to upload');
-      return;
-    }
-    
-    console.log('Valid files:', validFiles.map(f => f.name));
-    
-    try {
-      const uploadedFiles = [];
-      
-      for (const file of validFiles) {
-        const uploaded = await uploadToServer(file);
-        if (uploaded) {
-          uploadedFiles.push(uploaded);
-        }
-      }
-      
-      if (uploadedFiles.length > 0) {
-        setFiles(prev => {
-          const newFilesList = [...prev, ...uploadedFiles];
-          onFileUpload(newFilesList);
-          return newFilesList;
-        });
-      }
-    } catch (error) {
-      console.error('Error in handleValidFiles:', error);
-      toast.error('An error occurred while processing files');
-    }
+    return valid;
   };
 
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
-    handleValidFiles(newFiles);
+    const validFiles = validateFiles(newFiles);
+
+    setFiles((prev) => {
+      const updated = [...prev, ...validFiles];
+      onFilesSelected(updated);
+      return updated;
+    });
     event.target.value = null;
   };
 
   const handleDrop = (event) => {
     event.preventDefault();
     const newFiles = Array.from(event.dataTransfer.files);
-    handleValidFiles(newFiles);
+    const validFiles = validateFiles(newFiles);
+
+    setFiles((prev) => {
+      const updated = [...prev, ...validFiles];
+      onFilesSelected(updated);
+      return updated;
+    });
   };
 
   const handleDragOver = (event) => {
@@ -137,7 +61,7 @@ const FileUploader = ({ onFileUpload }) => {
   const removeFile = (index) => {
     const newFiles = files.filter((_, i) => i !== index);
     setFiles(newFiles);
-    onFileUpload(newFiles);
+    onFilesSelected(newFiles);
   };
 
   return (
@@ -150,11 +74,9 @@ const FileUploader = ({ onFileUpload }) => {
       >
         <FaCloudUploadAlt className="mx-auto text-blue-500 text-5xl mb-4" />
         <p className="text-gray-600">
-          Drag & Drop or <span className="text-blue-500">Click to Upload</span> Files
+          Drag & Drop or <span className="text-blue-500">Click to Select</span> Files
         </p>
-        <p className="text-xs text-gray-500 mt-2">
-          PDF, DOCX, JPG, PNG (Max 50MB)
-        </p>
+        <p className="text-xs text-gray-500 mt-2">PDF, DOCX, JPG, PNG (Max 50MB)</p>
         <input
           type="file"
           ref={fileInputRef}
@@ -167,22 +89,17 @@ const FileUploader = ({ onFileUpload }) => {
 
       {files.length > 0 && (
         <div className="mt-4">
-          <h4 className="text-sm font-semibold text-gray-700 mb-2">Uploaded Files:</h4>
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">Selected Files:</h4>
           <div className="space-y-2">
             {files.map((file, index) => (
               <div
                 key={index}
                 className="flex items-center justify-between bg-gray-100 p-3 rounded-md"
               >
-                <a
-                  href={file.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-blue-600 hover:underline"
-                >
+                <div className="flex items-center text-gray-700">
                   <FaFileAlt className="text-blue-500 mr-3" />
                   <span className="text-sm">{file.name}</span>
-                </a>
+                </div>
                 <button
                   onClick={() => removeFile(index)}
                   className="text-red-500 hover:text-red-700"

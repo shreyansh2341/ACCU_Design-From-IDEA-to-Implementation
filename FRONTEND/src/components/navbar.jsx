@@ -406,7 +406,7 @@ const Navbar = () => {
 
           {/* Right - Dashboard, Auth, Quote for desktop and medium devices */}
           <div className="hidden md:flex items-center space-x-4">
-            {authenticatedUser && (
+            {/* {authenticatedUser && (
               <SLink
                 to={
                   authenticatedUser.role === 'admin'
@@ -420,7 +420,59 @@ const Navbar = () => {
                 <FaTachometerAlt className="mr-1" />
                 Dashboard
               </SLink>
+            )} */}
+
+            {authenticatedUser && authenticatedUser.role === 'admin' && (
+              <div className="relative group">
+                {/* Button that admin sees */}
+                <button
+                  type="button"
+                  className="flex items-center text-black hover:text-blue-500 transition-all duration-300"
+                >
+                  <FaTachometerAlt className="mr-1" />
+                  <span>Admin Panel</span>
+                  <FaChevronDown size={12} className="ml-1" />
+                </button>
+
+                {/* Dropdown with the two admin sections */}
+                <div className="absolute right-0 mt-2 bg-white text-black rounded-md shadow-lg py-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transform group-hover:translate-y-1 transition-all duration-200 z-50">
+                  <SLink
+                    to="/admin-dashboard"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    <div className="font-semibold hover:text-blue-500">CMS Dashboard</div>
+                    <p className="text-xs text-gray-500 hover:text-blue-500">
+                      Blogs, posts, testimonials & media
+                    </p>
+                  </SLink>
+
+                  <SLink
+                    to="/manage-orders"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    <div className="font-semibold hover:text-blue-500">Orders & Users</div>
+                    <p className="text-xs text-gray-500 hover:text-blue-500">
+                      Orders, users, vendors & operations
+                    </p>
+                  </SLink>
+                </div>
+              </div>
             )}
+
+            {authenticatedUser && authenticatedUser.role !== 'admin' && (
+              <SLink
+                to={
+                  authenticatedUser.role === 'vendor'
+                    ? '/vendor-dashboard'
+                    : '/user-dashboard'
+                }
+                className="text-black hover:text-blue-500 flex items-center transition-all duration-300"
+              >
+                <FaTachometerAlt className="mr-1" />
+                Dashboard
+              </SLink>
+            )}
+
 
             {/* 👤 Login / Logout + Tooltip */}
             {authenticatedUser ? (
@@ -566,7 +618,7 @@ const Navbar = () => {
                 {activeDropdown === 'industries' && (
                   <div className="mt-2 pl-4 border-l-2 border-blue-300 space-y-3">
                     {[
-                      { path: 'defence', name: 'Defence' },                      
+                      { path: 'defence', name: 'Defence' },
                       { path: 'epc', name: 'EPC' },
                       { path: 'biofuel', name: 'Bio-Fuel-Energy' },
                       { path: 'agri-tech', name: 'Agriculture' },
@@ -681,7 +733,7 @@ const Navbar = () => {
 
             {/* Mobile Auth & Quote */}
             <div className="p-4 space-y-4 border-t">
-              {authenticatedUser && (
+              {/* {authenticatedUser && (
                 <SLink
                   to={
                     authenticatedUser.role === 'admin'
@@ -696,7 +748,44 @@ const Navbar = () => {
                   <FaTachometerAlt className="mr-2" />
                   Dashboard
                 </SLink>
+              )} */}
+
+              {authenticatedUser && authenticatedUser.role === 'admin' && (
+                <>
+                  <SLink
+                    to="/admin-dashboard"
+                    className="flex items-center text-black hover:text-blue-500 py-2"
+                    onClick={closeMobileMenu}
+                  >
+                    <FaTachometerAlt className="mr-2 hover:text-blue-500" />
+                    CMS Dashboard
+                  </SLink>
+                  <SLink
+                    to="/manage-orders"
+                    className="flex items-center text-black hover:text-blue-500 py-2"
+                    onClick={closeMobileMenu}
+                  >
+                    <FaClipboardList className="mr-2 hover:text-blue-500" />
+                    Orders & Users
+                  </SLink>
+                </>
               )}
+
+              {authenticatedUser && authenticatedUser.role !== 'admin' && (
+                <SLink
+                  to={
+                    authenticatedUser.role === 'vendor'
+                      ? '/vendor-dashboard'
+                      : '/user-dashboard'
+                  }
+                  className="flex items-center text-black hover:text-blue-500 py-2"
+                  onClick={closeMobileMenu}
+                >
+                  <FaTachometerAlt className="mr-2 hover:text-blue-500" />
+                  Dashboard
+                </SLink>
+              )}
+
 
 
               {authenticatedUser ? (

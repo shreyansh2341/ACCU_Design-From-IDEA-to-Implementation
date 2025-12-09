@@ -15,9 +15,6 @@ const drive = google.drive({ version: 'v3', auth: oAuth2Client });
 
 const uploadToDrive = async (req, res) => {
   try {
-    console.log('Upload request received:');
-    console.log('Files:', req.files ? Object.keys(req.files) : 'No files');
-    console.log('Content-Type:', req.headers['content-type']);
 
     if (!req.files || !req.files.file) {
       console.log('No files found in request');

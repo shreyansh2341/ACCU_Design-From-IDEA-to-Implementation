@@ -63,7 +63,7 @@ const MediaGallery = () => {
               {/* Image */}
               <div className="relative h-48 overflow-hidden">
                 <img
-                  src={item.mediaImage.url}
+                  src={item.media.url}
                   alt="media"
                   className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
                 />

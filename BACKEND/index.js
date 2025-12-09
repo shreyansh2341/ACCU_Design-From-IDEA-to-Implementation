@@ -18,58 +18,60 @@ const mediaRouter = require('./routes/mediaroute');
 const driveUploadRoute = require('./routes/driveUploadRoute');
 const testimonialsrouter = require('./routes/testimonialsroute');
 const emailRouter = require('./routes/emailroute');
-const googleRouter = require('./routes/googleAuth.routes.js');
+const orderRouter = require('./routes/order.routes.js');
+const adminUserRouter = require("./routes/adminUser.route.js");
+const profileRouter = require("./routes/profile.routes.js");
 
 // ---------- PASSPORT CONFIG ----------
-require('./config/passport-config.js'); // Google OAuth strategy
+require('./config/passport-config.js'); 
 
 const app = express();
 
 // ---------- MIDDLEWARES ----------
-
-// Parse URL-encoded and JSON bodies
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Determine frontend origin based on environment
 let origin_header = process.env.ENV === 'DEV' ? 'http://localhost:5173' : process.env.FRONTEND_URL;
 console.log(`CORS Origin Set To: ${origin_header}`);
 
-// CORS setup
 app.use(cors({
   origin: origin_header,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 }));
 
-// Security headers
 app.use(helmet());
 app.use(helmet.frameguard({ action: 'deny' }));
 app.use(helmet.noSniff());
 app.use(helmet.hsts({
-  maxAge: 31536000, // 1 year
+  maxAge: 31536000,
   includeSubDomains: true,
   preload: true,
 }));
 
-// Cookie parser
 app.use(cookieparser());
 
-// File upload middleware
-app.use(fileUpload({ useTempFiles: false }));
+// 🔁 IMPORTANT: switch to temp files for ALL file uploads
+app.use(fileUpload({
+  createParentPath: true,
+  useTempFiles: true,                 // <--- CHANGED (was false)
+  tempFileDir: '/tmp',               // temp directory (Linux-friendly)
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+}));
 
-// ---------- PASSPORT ----------
 app.use(passport.initialize());
 
 // ---------- ROUTES ----------
-app.use('/api/user', userRouter);       // Email/password + optional Google login
-app.use('/api/google', googleAuthRouter); // Dedicated Google OAuth routes
+app.use('/api/user', userRouter);
+app.use('/api', googleAuthRouter);
 app.use('/api/blog', blogRouter);
 app.use('/api/media', mediaRouter);
 app.use('/api/testimonials', testimonialsrouter);
 app.use('/api/drive', driveUploadRoute);
 app.use('/api/email', emailRouter);
-app.use('/api', googleRouter); // Google auth routes
+app.use('/api/order', orderRouter);
+app.use("/api/admin", adminUserRouter);
+app.use('/api/profile', profileRouter)
 
 // 404 Route Handler
 app.use((req, res) => {
