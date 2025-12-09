@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthProvider.jsx';
 import AdminDashboard from './Dashboard.jsx';
-import VendorDashboard from '../vendor-dashboard/VendorDashboard.jsx';
+import VendorDashboard from '../vendor-dashboard/VendorDashboardLayout.jsx';
 import UserDashboard from '../user-dashboard/UserDashboard.jsx';
 
 const DashboardRouter = () => {

@@ -102,6 +102,8 @@ const {
   adminRejectCancellation,
   getOrderReviewsAdmin,
   deleteOrderAdmin,
+  getVendorOrders,
+  getVendorReviewedOrders,
 } = require("../controller/order.controller");
 
 const { authenticatedUser, isAdmin } = require("../middleware/authUser");
@@ -208,5 +210,19 @@ orderRouter.delete(
   isAdmin("admin"),
   deleteOrderAdmin
 );
+
+// ✅ VENDOR ROUTES
+orderRouter.get(
+  "/vendor/my-orders",
+  authenticatedUser,
+  getVendorOrders
+);
+
+orderRouter.get(
+  "/vendor/my-reviews",
+  authenticatedUser,
+  getVendorReviewedOrders
+);
+
 
 module.exports = orderRouter;

@@ -190,31 +190,6 @@ const getSingleOrder = async (req, res) => {
 };
 
 // ---------------- MESSAGES (CHAT) ----------------
-// const getOrderMessages = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({ message: "Invalid order ID" });
-//     }
-
-//     const messages = await OrderMessage.find({ order: id })
-//       .populate("sender", "name email role")
-//       .sort({ createdAt: 1 });
-
-//     return res.status(200).json({
-//       message: "Messages retrieved",
-//       messages,
-//     });
-//   } catch (error) {
-//     console.error("getOrderMessages error:", error);
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
 const getOrderMessages = async (req, res) => {
   try {
     const { id } = req.params;
@@ -279,57 +254,6 @@ const getOrderMessages = async (req, res) => {
   }
 };
 
-// const addOrderMessage = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { text } = req.body;
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({ message: "Invalid order ID" });
-//     }
-//     if (!text || !text.trim()) {
-//       return res.status(400).json({ message: "Message text is required" });
-//     }
-
-//     const order = await Order.findById(id);
-//     if (!order) {
-//       return res.status(404).json({ message: "Order not found" });
-//     }
-
-//     // access control similar to getSingleOrder
-//     const role = req.user?.role;
-//     if (role === "user" && String(order.user) !== String(req.user._id)) {
-//       return res.status(403).json({ message: "Access denied" });
-//     }
-//     if (
-//       role === "vendor" &&
-//       (!order.vendor || String(order.vendor) !== String(req.user._id))
-//     ) {
-//       return res.status(403).json({ message: "Access denied" });
-//     }
-
-//     const message = await OrderMessage.create({
-//       order: id,
-//       sender: req.user._id,
-//       senderRole: role,
-//       text: text.trim(),
-//     });
-
-//     return res.status(201).json({
-//       message: "Message added",
-//       item: message,
-//     });
-//   } catch (error) {
-//     console.error("addOrderMessage error:", error);
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// ---------------- USER: REVIEW ORDER ----------------
-
 const addOrderMessage = async (req, res) => {
   try {
     const { id } = req.params;
@@ -385,56 +309,6 @@ const addOrderMessage = async (req, res) => {
     });
   }
 };
-
-// const addOrderReview = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const {
-//       ratingManufacturing,
-//       ratingDelivery,
-//       ratingHandling,
-//       comment,
-//     } = req.body;
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({ message: "Invalid order ID" });
-//     }
-
-//     const order = await Order.findById(id);
-//     if (!order) {
-//       return res.status(404).json({ message: "Order not found" });
-//     }
-
-//     // only order owner can review
-//     if (String(order.user) !== String(req.user._id)) {
-//       return res.status(403).json({ message: "Access denied" });
-//     }
-
-//     // if you want to restrict: only when completed
-//     // if (order.status !== "completed") { ... }
-
-//     order.review = {
-//       ratingManufacturing: ratingManufacturing || null,
-//       ratingDelivery: ratingDelivery || null,
-//       ratingHandling: ratingHandling || null,
-//       comment: comment || "",
-//       createdAt: new Date(),
-//     };
-
-//     await order.save();
-
-//     return res.status(200).json({
-//       message: "Review saved",
-//       order,
-//     });
-//   } catch (error) {
-//     console.error("addOrderReview error:", error);
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
 
 const addOrderReview = async (req, res) => {
   try {
@@ -591,125 +465,6 @@ const requestOrderCancellation = async (req, res) => {
   }
 };
 
-// // --------------- ADMIN: GET ALL ORDERS ----------------
-// const getAllOrdersAdmin = async (req, res) => {
-//   try {
-//     const orders = await Order.find()
-//       .populate("user", "name email role")
-//       .populate("vendor", "name email role")
-//       .sort({ createdAt: -1 });
-
-//     return res.status(200).json({
-//       message: "All orders retrieved",
-//       orders,
-//     });
-//   } catch (error) {
-//     console.error("getAllOrdersAdmin error:", error);
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // --------------- ADMIN: UPDATE STATUS ----------------
-// const updateOrderStatusAdmin = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { status, note, estimatedCompletionAt } = req.body;
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//       return res.status(400).json({ message: "Invalid order ID" });
-//     }
-//     if (!status) {
-//       return res.status(400).json({ message: "status is required" });
-//     }
-
-//     const order = await Order.findById(id);
-//     if (!order) {
-//       return res.status(404).json({ message: "Order not found" });
-//     }
-
-//     order.status = status;
-//     order.updatedAt = new Date();
-
-//     if (estimatedCompletionAt) {
-//       order.estimatedCompletionAt = new Date(estimatedCompletionAt);
-//     }
-
-//     order.statusHistory = order.statusHistory || [];
-//     order.statusHistory.push({
-//       status,
-//       note: note || "",
-//       updatedBy: req.user?._id || null,
-//       updatedAt: new Date(),
-//     });
-
-//     await order.save();
-
-//     const populated = await Order.findById(id)
-//       .populate("user", "name email role")
-//       .populate("vendor", "name email role");
-
-//     return res.status(200).json({
-//       message: "Order status updated",
-//       order: populated,
-//     });
-//   } catch (error) {
-//     console.error("updateOrderStatusAdmin error:", error);
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// // ADMIN: approve cancellation and delete order
-// const adminCancelAndDeleteOrder = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { adminNote } = req.body;
-
-//     const order = await Order.findById(id);
-//     if (!order) {
-//       return res.status(404).json({ message: "Order not found" });
-//     }
-
-//     // Optional: you could log cancellation info somewhere else before delete
-
-//     // Log final status before deleting (for statusHistory if you keep it)
-//     order.statusHistory = order.statusHistory || [];
-//     order.statusHistory.push({
-//       status: "cancelled",
-//       updatedAt: new Date(),
-//       note: adminNote || "Order cancelled by admin",
-//     });
-
-//     order.cancellation = {
-//       ...(order.cancellation || {}),
-//       status: "approved",
-//       reviewedAt: new Date(),
-//       reviewedBy: req.user._id,
-//     };
-
-//     await order.save();
-
-//     // Now delete order from DB as per your requirement
-//     await Order.findByIdAndDelete(order._id);
-
-//     return res.status(200).json({
-//       message: "Order cancelled and deleted successfully",
-//     });
-//   } catch (error) {
-//     console.error("adminCancelAndDeleteOrder error:", error);
-//     return res.status(500).json({
-//       message: "Internal server error while cancelling order",
-//       error: error.message,
-//     });
-//   }
-// };
-
-
 // --------------- ADMIN: ASSIGN VENDOR ----------------
 const assignVendorAdmin = async (req, res) => {
   try {
@@ -761,40 +516,6 @@ const assignVendorAdmin = async (req, res) => {
     });
   }
 };
-
-// // --------------- ADMIN: GET VENDORS ----------------
-// const getAllVendorsAdmin = async (req, res) => {
-//   try {
-//     const vendors = await User.find({ role: "vendor" }).select(
-//       "name email role"
-//     );
-//     return res.status(200).json({
-//       message: "Vendors retrieved",
-//       vendors,
-//     });
-//   } catch (error) {
-//     console.error("getAllVendorsAdmin error:", error);
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// module.exports = {
-//   createOrder,
-//   getMyOrders,
-//   getSingleOrder,
-//   getOrderMessages,
-//   addOrderMessage,
-//   addOrderReview,
-//   getAllOrdersAdmin,
-//   updateOrderStatusAdmin,
-//   assignVendorAdmin,
-//   getAllVendorsAdmin,
-//   requestOrderCancellation,
-//   adminCancelAndDeleteOrder,
-// };
 
 // --------------- ADMIN: GET ALL ORDERS ----------------
 const getAllOrdersAdmin = async (req, res) => {
@@ -900,51 +621,6 @@ const deleteOrderAdmin = async (req, res) => {
     });
   }
 };
-
-
-// ADMIN: approve cancellation and delete order (existing)
-// const adminCancelAndDeleteOrder = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { adminNote } = req.body;
-
-//     const order = await Order.findById(id);
-//     if (!order) {
-//       return res.status(404).json({ message: "Order not found" });
-//     }
-
-//     order.statusHistory = order.statusHistory || [];
-//     order.statusHistory.push({
-//       status: "cancelled",
-//       updatedAt: new Date(),
-//       note: adminNote || "Order cancelled by admin",
-//     });
-
-//     order.cancellation = {
-//       ...(order.cancellation || {}),
-//       requested: true,
-//       status: "approved",
-//       reviewedAt: new Date(),
-//       reviewedBy: req.user._id,
-//       reasonType: order.cancellation?.reasonType || "Admin",
-//       reasonText:
-//         order.cancellation?.reasonText || adminNote || "Order cancelled by admin",
-//     };
-
-//     await order.save();
-//     await Order.findByIdAndDelete(order._id);
-
-//     return res.status(200).json({
-//       message: "Order cancelled and deleted successfully",
-//     });
-//   } catch (error) {
-//     console.error("adminCancelAndDeleteOrder error:", error);
-//     return res.status(500).json({
-//       message: "Internal server error while cancelling order",
-//       error: error.message,
-//     });
-//   }
-// };
 
 const adminCancelAndDeleteOrder = async (req, res) => {
   try {
@@ -1103,28 +779,6 @@ const getAllVendorsAdmin = async (req, res) => {
   }
 };
 
-// const getOrderReviewsAdmin = async (req, res) => {
-//   try {
-//     const ordersWithReviews = await Order.find({
-//       "review.comment": { $ne: "" },
-//     })
-//       .populate("user", "name email")
-//       .sort({ "review.createdAt": -1, createdAt: -1 });
-
-//     return res.status(200).json({
-//       message: "Order reviews retrieved",
-//       orders: ordersWithReviews,
-//     });
-//   } catch (error) {
-//     console.error("getOrderReviewsAdmin error:", error);
-//     return res.status(500).json({
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// --------------- ADMIN: GET ORDER REVIEWS OVERVIEW ----------------
 const getOrderReviewsAdmin = async (req, res) => {
   try {
     // include all orders that have a review object (even if comment is empty)
@@ -1147,6 +801,38 @@ const getOrderReviewsAdmin = async (req, res) => {
   }
 };
 
+// ✅ VENDOR ORDERS
+const getVendorOrders = async (req, res) => {
+  try {
+    const vendorId = req.user._id;
+
+    const orders = await Order.find({ vendor: vendorId })
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
+
+    res.json({ orders });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch vendor orders" });
+  }
+};
+
+// ✅ VENDOR REVIEWS
+const getVendorReviewedOrders = async (req, res) => {
+  try {
+    const vendorId = req.user._id;
+
+    const orders = await Order.find({
+      vendor: vendorId,
+      review: { $exists: true },
+    })
+      .populate("user", "name email")
+      .sort({ "review.createdAt": -1 });
+
+    res.json({ orders });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch vendor reviews" });
+  }
+};
 
 
 module.exports = {
@@ -1167,4 +853,6 @@ module.exports = {
   adminApproveCancellation,
   adminRejectCancellation,
   getOrderReviewsAdmin,
+  getVendorOrders,
+  getVendorReviewedOrders,
 };

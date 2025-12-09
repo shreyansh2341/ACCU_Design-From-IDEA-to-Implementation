@@ -16,8 +16,7 @@ const REACT_APP_BACKEND_URL =
   import.meta.env.VITE_WEBSITE_URL || "http://localhost:4000";
 
 const UserSidebar = ({ component, setComponent, toggleSidebar }) => {
-  const { profile, setauthenticatedUser } = useAuth();
-  console.log("UserSidebar profile:", profile);
+  const { setauthenticatedUser } = useAuth();
 
   const navItems = [
     {
@@ -71,23 +70,24 @@ const UserSidebar = ({ component, setComponent, toggleSidebar }) => {
 
   return (
     <nav className="flex flex-col h-full p-4 overflow-y-auto bg-white shadow-[0_10px_30px_rgba(15,23,42,0.12)] border-r border-blue-50">
-      {/* User Info */}
-      <div className="mb-4 text-center">
-        <div className="relative inline-block">
+      {/* 🔹 Logo block (same style as Vendor sidebar) */}
+      <div className="mb-3 flex items-center gap-3 px-2 py-2.5 rounded-2xl bg-white/70 border border-blue-50 shadow-sm shadow-slate-200 mt-2">
+        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-500 flex items-center justify-center shadow-md shadow-blue-500/40 overflow-hidden">
           <img
-            src={profile?.photo?.public_id}
-            alt="profile"
-            className="mx-auto w-20 h-20 rounded-full object-cover border-2 border-blue-500 shadow-md shadow-blue-400/60"
+            src="https://res.cloudinary.com/dxrryep5y/image/upload/v1753295781/website_static_media/ad_logo.svg"
+            alt="ACCU Design"
+            className="w-8 h-8 object-contain"
           />
-          <span className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-emerald-400 border-2 border-white" />
         </div>
-        <h2 className="mt-2 text-lg font-semibold text-gray-900 truncate">
-          {profile?.name}
-        </h2>
-        <p className="text-xs text-gray-500">User Dashboard</p>
+        <div>
+          <h1 className="text-sm font-semibold text-gray-800">
+            ACCU <span className="text-blue-500">Design</span>
+          </h1>
+          <p className="text-[11px] text-gray-500">User Dashboard</p>
+        </div>
       </div>
 
-      {/* Back to Home (below profile) */}
+      {/* Back to Home */}
       <button
         onClick={goHome}
         className="flex items-center gap-2 mb-4 px-3 py-2 rounded-xl border border-blue-100 

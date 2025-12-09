@@ -7,7 +7,12 @@ import Register from './pages/register.jsx';
 import Contact from './pages/Contact.jsx';
 import AdminDashboard from './pages/Dashboard.jsx';
 import DashboardRouter from './pages/DashboardRouter';
-// import VendorDashboard from './pages/VendorDashboard.jsx';
+import VendorDashboard from './vendor-dashboard/VendorDashboardLayout.jsx';
+import VendorOrders from "./vendor-dashboard/VendorOrders";
+import VendorChats from "./vendor-dashboard/VendorChats";
+import VendorReviews from "./vendor-dashboard/VendorReviews";
+import VendorNotifications from "./vendor-dashboard/VendorNotifications";
+import VendorProfile from "./vendor-dashboard/VendorProfile";
 import UserDashboard from './user-dashboard/UserDashboard.jsx';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -110,7 +115,12 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
-        {/* <Route path="/vendor-dashboard" element={<VendorDashboard />} /> */}
+        <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+        <Route path="/vendor-dashboard/orders" element={<VendorOrders />} />
+        <Route path="/vendor-dashboard/chats" element={<VendorChats />} />
+        <Route path="/vendor-dashboard/reviews" element={<VendorReviews />} />
+        <Route path="/vendor-dashboard/notifications" element={<VendorNotifications />} />
+        <Route path="/vendor-dashboard/profile" element={<VendorProfile />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/dashboard" element={<DashboardRouter />} />
         <Route exact path="/my-blogs" element={<Myblogs />} />
