@@ -1,22 +1,17 @@
-// src/pages/user/UserDashboard.jsx
-
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider.jsx";
 
-// Sidebar + user sections
 import UserSidebar from "@/user-dashboard/UserSidebar.jsx";
 import UploadCAD from "@/user-dashboard/UploadCAD.jsx";
 import MyOrders from "@/user-dashboard/MyOrders.jsx";
 import Messages from "@/user-dashboard/Messages.jsx";
 import Notifications from "@/user-dashboard/Notifications.jsx";
 
-// You can reuse your admin profile page if you want
-import MyProfile from "@/user-dashboard/myprofile.jsx";
+import MyProfile from "@/user-dashboard/MyProfile.jsx";
 
-// Optional: show some home content inside the dashboard
-import Hero from "@/home/Hero.jsx";
-import Trending from "@/home/Trending.jsx";
+import Hero from "../home/Hero.jsx";
+import Trending from "../home/Trending.jsx";
 
 const UserDashboard = () => {
   const { authenticatedUser } = useAuth();
@@ -25,9 +20,7 @@ const UserDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  // Redirect if not logged in
   if (!authenticatedUser) return <Navigate to="/login" />;
-  // Redirect if role is not "user" so admin/vendor can't open this
   if (authenticatedUser.role !== "user") return <Navigate to="/" />;
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);

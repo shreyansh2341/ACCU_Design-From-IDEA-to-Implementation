@@ -21,7 +21,6 @@ const emailRouter = require('./routes/emailroute');
 const orderRouter = require('./routes/order.routes.js');
 const adminUserRouter = require("./routes/adminUser.route.js");
 const profileRouter = require("./routes/profile.routes.js");
-// const vendorRouter = require("./routes/vendor.routes");
 
 // ---------- PASSPORT CONFIG ----------
 require('./config/passport-config.js'); 
@@ -73,7 +72,6 @@ app.use('/api/email', emailRouter);
 app.use('/api/order', orderRouter);
 app.use("/api/admin", adminUserRouter);
 app.use('/api/profile', profileRouter);
-// app.use('/api/vendor', vendorRouter);
 
 // 404 Route Handler
 app.use((req, res) => {

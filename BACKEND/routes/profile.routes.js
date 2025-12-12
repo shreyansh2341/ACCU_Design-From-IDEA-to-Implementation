@@ -1,5 +1,3 @@
-// routes/profile.routes.js
-
 const express = require("express");
 const {
   getMyProfile,

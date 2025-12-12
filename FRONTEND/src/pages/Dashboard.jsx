@@ -1,5 +1,3 @@
-// src/pages/admin/AdminDashboard.jsx
-
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider.jsx";
