@@ -42,7 +42,7 @@ const LaserCuttingServices = () => {
             Precision Laser Cutting Services
           </h1>
           <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-blue-100">
-            At <span className="font-semibold text-cyan-300">Accu Design</span>, we deliver clean, accurate, and fast laser-cut parts for your most demanding projects.
+            At <span className="font-semibold text-cyan-300">ACCU Design</span>, we deliver clean, accurate, and fast laser-cut parts for your most demanding projects.
           </p>
           <div className="mt-8">
             <SLink

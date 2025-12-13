@@ -43,7 +43,7 @@ const GearManufacturing = () => {
           </h1>
           <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-blue-100">
             At{" "}
-            <span className="font-semibold text-cyan-300">Accu DESIGN</span>, we
+            <span className="font-semibold text-cyan-300">ACCU DESIGN</span>, we
             craft high-precision gears to power your machinery with accuracy, efficiency, and durability.
           </p>
           <div className="mt-8">

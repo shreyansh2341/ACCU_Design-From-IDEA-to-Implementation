@@ -3,6 +3,7 @@ const {
   getAllUsersAdmin,
   updateUserRoleAdmin,
   toggleUserActiveAdmin,
+  deleteUserAdmin,
 } = require("../controller/adminUser.controller");
 
 const { authenticatedUser, isAdmin } = require("../middleware/authUser");
@@ -28,6 +29,13 @@ adminUserRouter.patch(
   authenticatedUser,
   isAdmin("admin"),
   toggleUserActiveAdmin
+);
+
+adminUserRouter.delete(
+  "/users/:id",
+  authenticatedUser,
+  isAdmin("admin"),
+  deleteUserAdmin
 );
 
 module.exports = adminUserRouter;

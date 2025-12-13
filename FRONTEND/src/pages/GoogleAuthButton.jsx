@@ -14,14 +14,20 @@ const GoogleAuthButton = ({ type }) => {
   return (
     <button
       onClick={handleClick}
-      className="w-full flex items-center justify-center gap-2 border rounded-lg py-2 text-gray-600 hover:bg-gray-100"
+      className="w-full flex items-center justify-center gap-3
+                 bg-white border border-gray-200 rounded-xl py-2.5
+                 text-gray-700 font-medium
+                 shadow-sm hover:shadow-md
+                 hover:-translate-y-[1px] transition"
     >
       <img
         src="https://developers.google.com/identity/images/g-logo.png"
         alt="Google"
         className="w-5 h-5"
       />
-      {type === "login" ? "Continue with Google" : "Sign up with Google"}
+      <span>
+        {type === "login" ? "Continue with Google" : "Sign up with Google"}
+      </span>
     </button>
   );
 };

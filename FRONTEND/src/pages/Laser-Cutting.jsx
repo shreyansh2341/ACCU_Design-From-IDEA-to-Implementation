@@ -19,7 +19,7 @@ const LaserCutting = () => {
           <div className="flex flex-col gap-3 mb-5 w-full max-w-xs md:max-w-[20vw]">
             {[
               { name: "Machining", path: "/machining" },
-              { name: "Laser Cutting", path: "/laser-cutting" },
+              // { name: "Laser Cutting", path: "/laser-cutting" },
               { name: "Fabrication", path: "/fabrication" },
               { name: "3D Printing", path: "/3d-printing" },
               { name: "Casting", path: "/casting" },
@@ -36,7 +36,7 @@ const LaserCutting = () => {
           </div>
 
           {/* Left Image */}
-          <SLink to="contact-us">
+          <SLink to="/contact-us">
             <img
               src="https://res.cloudinary.com/dxrryep5y/image/upload/v1753295826/website_static_media/Group_48095677_1.png"
               alt="Left Side"
@@ -68,38 +68,35 @@ const LaserCutting = () => {
           </ul>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8 w-full">
-            {[
-              { label: "Affordable Pricing", icon: "₹" },
-              { label: "24x7 Support", icon: "🕒" },
-              { label: "Certified & Insured", icon: "✅" },
-              { label: "Expert Technicians", icon: "🛠️" },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="
-                     flex flex-col items-center text-center 
-                     p-6 bg-gray rounded-xl shadow-sm 
-                     hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] 
-                     hover:scale-105 
-                     transition-transform duration-300
-                     cursor-pointer
-                   "
-              >
-                <div className="text-5xl mb-3">{feature.icon}</div>
-                <span className="font-semibold text-gray-800">{feature.label}</span>
+          <div className="mt-8 w-full">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+              {[
+                { label: "Affordable Pricing", icon: "₹" },
+                { label: "24x7 Support", icon: "🕒" },
+                { label: "Certified & Insured", icon: "✅" },
+                { label: "Expert Technicians", icon: "🛠️" },
+              ].map((feature, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center text-center p-6 bg-gray rounded-xl shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:scale-105 transition-transform duration-300 cursor-pointer"
+                >
+                  <div className="text-5xl mb-3">{feature.icon}</div>
+                  <span className="font-semibold text-gray-800">{feature.label}</span>
+                </div>
+              ))}
+
+              {/* Learn More Button */}
+              <div className="col-span-full flex justify-center mt-4">
+                <SLink
+                  to="/LaserCuttingServices"
+                  className="inline-block px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition duration-300 ease-in-out"
+                >
+                  Learn More
+                </SLink>
               </div>
-            ))}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center mb-8">
-        <SLink
-          to="/LaserCuttingServices"
-          className="inline-block px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition duration-300 ease-in-out"
-        >
-          Learn More
-        </SLink>
       </div>
     </div>
   );

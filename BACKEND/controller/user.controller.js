@@ -13,20 +13,154 @@ const pendingPasswordResets = {};
 /**
  * REGISTER CONTROLLER
  */
+// const register = async (req, res) => {
+//   try {
+//     const { name, email, password, role, phone, isGoogleSignup, picture } = req.body;
+
+//     // ---------------- VALIDATION ----------------
+//     if (isGoogleSignup) {
+//       // Google signup → no password, requires name, email, role, phone, picture
+//       if (!name || !email || !phone || !picture) {
+//         return res
+//           .status(400)
+//           .json({ message: "Please fill all required fields for Google signup" });
+//       }
+//     } else {
+//       // Manual signup → requires name, email, password, role, phone, photo
+//       if (!req.files || !req.files.photo) {
+//         return res.status(400).json({ message: "Photo is required" });
+//       }
+
+//       const { photo } = req.files;
+//       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+//       if (!allowedTypes.includes(photo.mimetype)) {
+//         return res
+//           .status(400)
+//           .json({ message: "Invalid file type. Only JPEG and PNG are allowed." });
+//       }
+
+//       if (!name || !email || !password || !phone) {
+//         return res.status(400).json({ message: "Please fill all required fields" });
+//       }
+//     }
+
+//     // ---------------- CHECK IF USER EXISTS ----------------
+//     let user = await User.findOne({ email });
+//     if (user) {
+//       if (user.isEmailVerified) {
+//         return res.status(400).json({ message: "User already exists" });
+//       } else {
+//         // Resend OTP for unverified user
+//         const otp = generateOTP();
+//         const otpExpiry = getOTPExpiry();
+
+//         pendingUsers[email] = {
+//           name,
+//           email,
+//           password: password ? await bcrypt.hash(password, 10) : user.password,
+//           phone,
+//           photo: user.photo,
+//           role,
+//           otp,
+//           otpExpiry,
+//           isGoogleSignup,
+//         };
+
+//         await sendOTPEmail(email, name, otp);
+
+//         return res.status(200).json({
+//           message: "User exists but email not verified. OTP re-sent.",
+//           requiresVerification: true,
+//           email,
+//         });
+//       }
+//     }
+
+//     // ---------------- PHOTO HANDLING ----------------
+//     let photoData = null;
+
+//     if (isGoogleSignup) {
+//       // Google signup → use picture from Google
+//       photoData = {
+//         public_id: `google_${Date.now()}`,
+//         url: picture,
+//       };
+//     } else {
+//       // Manual signup → upload to Cloudinary
+//       const { photo } = req.files;
+//       const cloudinaryResponse = await new Promise((resolve, reject) => {
+//         const stream = cloudinary.uploader.upload_stream(
+//           {
+//             folder: "user_photos",
+//             use_filename: true,
+//             unique_filename: false,
+//             overwrite: true,
+//           },
+//           (error, result) => {
+//             if (error) return reject(error);
+//             resolve(result);
+//           }
+//         );
+//         stream.end(photo.data);
+//       });
+
+//       if (!cloudinaryResponse?.secure_url) {
+//         return res.status(500).json({ message: "Cloudinary upload failed" });
+//       }
+
+//       photoData = {
+//         public_id: cloudinaryResponse.public_id,
+//         url: cloudinaryResponse.secure_url,
+//       };
+//     }
+
+//     // ---------------- STORE PENDING USER ----------------
+//     const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
+
+//     const otp = generateOTP();
+//     const otpExpiry = getOTPExpiry();
+
+//     pendingUsers[email] = {
+//       name,
+//       email,
+//       password: hashedPassword, // null for Google users
+//       phone,
+//       photo: photoData,
+//       role,
+//       otp,
+//       otpExpiry,
+//       isGoogleSignup,
+//     };
+
+//     await sendOTPEmail(email, name, otp);
+//     // await sendOTPPhone(phone, otp);  // optional
+
+//     return res.status(201).json({
+//       message: "OTP sent successfully to email. Please verify to complete registration.",
+//       email,
+//       requiresVerification: true,
+//     });
+//   } catch (error) {
+//     console.error("Register error:", error);
+//     res.status(500).json({
+//       message: "Internal Server Error",
+//       error: error.message,
+//     });
+//   }
+// };
+
 const register = async (req, res) => {
   try {
     const { name, email, password, role, phone, isGoogleSignup, picture } = req.body;
 
     // ---------------- VALIDATION ----------------
     if (isGoogleSignup) {
-      // Google signup → no password, requires name, email, role, phone, picture
-      if (!name || !email || !role || !phone || !picture) {
-        return res
-          .status(400)
-          .json({ message: "Please fill all required fields for Google signup" });
+      if (!name || !email || !phone || !picture) {
+        return res.status(400).json({
+          message: "Please fill all required fields for Google signup",
+        });
       }
     } else {
-      // Manual signup → requires name, email, password, role, phone, photo
       if (!req.files || !req.files.photo) {
         return res.status(400).json({ message: "Photo is required" });
       }
@@ -34,23 +168,23 @@ const register = async (req, res) => {
       const { photo } = req.files;
       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
       if (!allowedTypes.includes(photo.mimetype)) {
-        return res
-          .status(400)
-          .json({ message: "Invalid file type. Only JPEG and PNG are allowed." });
+        return res.status(400).json({
+          message: "Invalid file type. Only JPEG and PNG are allowed.",
+        });
       }
 
-      if (!name || !email || !password || !role || !phone) {
+      if (!name || !email || !password || !phone) {
         return res.status(400).json({ message: "Please fill all required fields" });
       }
     }
 
     // ---------------- CHECK IF USER EXISTS ----------------
     let user = await User.findOne({ email });
+
     if (user) {
       if (user.isEmailVerified) {
         return res.status(400).json({ message: "User already exists" });
       } else {
-        // Resend OTP for unverified user
         const otp = generateOTP();
         const otpExpiry = getOTPExpiry();
 
@@ -64,6 +198,7 @@ const register = async (req, res) => {
           otp,
           otpExpiry,
           isGoogleSignup,
+          isActive: true, // ✅ ensure active
         };
 
         await sendOTPEmail(email, name, otp);
@@ -80,22 +215,15 @@ const register = async (req, res) => {
     let photoData = null;
 
     if (isGoogleSignup) {
-      // Google signup → use picture from Google
       photoData = {
         public_id: `google_${Date.now()}`,
         url: picture,
       };
     } else {
-      // Manual signup → upload to Cloudinary
       const { photo } = req.files;
       const cloudinaryResponse = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
-          {
-            folder: "user_photos",
-            use_filename: true,
-            unique_filename: false,
-            overwrite: true,
-          },
+          { folder: "user_photos" },
           (error, result) => {
             if (error) return reject(error);
             resolve(result);
@@ -103,10 +231,6 @@ const register = async (req, res) => {
         );
         stream.end(photo.data);
       });
-
-      if (!cloudinaryResponse?.secure_url) {
-        return res.status(500).json({ message: "Cloudinary upload failed" });
-      }
 
       photoData = {
         public_id: cloudinaryResponse.public_id,
@@ -116,24 +240,23 @@ const register = async (req, res) => {
 
     // ---------------- STORE PENDING USER ----------------
     const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
-
     const otp = generateOTP();
     const otpExpiry = getOTPExpiry();
 
     pendingUsers[email] = {
       name,
       email,
-      password: hashedPassword, // null for Google users
+      password: hashedPassword,
       phone,
       photo: photoData,
       role,
       otp,
       otpExpiry,
       isGoogleSignup,
+      isActive: true, // ✅ explicit
     };
 
     await sendOTPEmail(email, name, otp);
-    // await sendOTPPhone(phone, otp);  // optional
 
     return res.status(201).json({
       message: "OTP sent successfully to email. Please verify to complete registration.",
@@ -142,7 +265,7 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.error("Register error:", error);
-    res.status(500).json({
+    return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
     });
@@ -152,21 +275,165 @@ const register = async (req, res) => {
 /**
  * LOGIN CONTROLLER
  */
+// const login = async (req, res) => {
+//   const { email, password, role, isGoogleLogin, picture, name, phone } = req.body;
+
+//   try {
+//     if (!email) {
+//       return res.status(400).json({ message: "Please provide email" });
+//     }
+
+//     // ----------------- MANUAL LOGIN -----------------
+//     if (!isGoogleLogin) {
+//       if (!password) {
+//         return res.status(400).json({ message: "Password is required" });
+//       }
+
+//       const user = await User.findOne({ email }).select("+password");
+//       if (!user) {
+//         return res.status(404).json({
+//           message: "User not registered. Please complete registration.",
+//           requiresRegistration: true,
+//           email,
+//         });
+//       }
+
+
+//       if (!user.password) {
+//         return res
+//           .status(400)
+//           .json({ message: "This account was created via Google. Use Google login." });
+//       }
+
+//       const isMatch = await bcrypt.compare(password, user.password);
+//       if (!isMatch) {
+//         return res.status(400).json({ message: "Invalid email or password" });
+//       }
+
+//       if (!user.isEmailVerified) {
+//         // Resend OTP
+//         const otp = generateOTP();
+//         const otpExpiry = getOTPExpiry();
+
+//         pendingUsers[email] = {
+//           ...user.toObject(),
+//           password: user.password, // keep hashed
+//           otp,
+//           otpExpiry,
+//           isGoogleSignup: false,
+//         };
+
+//         await sendOTPEmail(user.email, user.name, otp);
+
+//         return res.status(403).json({
+//           message: "Email not verified. OTP sent again.",
+//           requiresVerification: true,
+//           email: user.email,
+//         });
+//       }
+
+//       if (role && user.role !== role) {
+//         return res
+//           .status(403)
+//           .json({ message: `Access denied. Expected role: ${user.role}` });
+//       }
+
+//       const token = await createAuthTokenAndSaveCookies(user._id, res);
+
+//       return res.status(200).json({
+//         success: true,
+//         message: "Login successful",
+//         user: {
+//           _id: user._id,
+//           name: user.name,
+//           email: user.email,
+//           role: user.role,
+//         },
+//         token,
+//       });
+//     }
+
+//     // ----------------- GOOGLE LOGIN -----------------
+//     else {
+//       let user = await User.findOne({ email });
+
+//       if (!user) {
+//         // Not registered yet → frontend should redirect to registration
+//         return res.status(404).json({
+//           message: "User not registered. Please complete registration.",
+//           requiresRegistration: true,
+//           email,
+//           name,
+//           phone,
+//           picture,
+//           role,
+//         });
+//       }
+
+//       if (!user.isEmailVerified) {
+//         // Resend OTP
+//         const otp = generateOTP();
+//         const otpExpiry = getOTPExpiry();
+
+//         pendingUsers[email] = {
+//           ...user.toObject(),
+//           password: null, // Google user → no password
+//           otp,
+//           otpExpiry,
+//           isGoogleSignup: true,
+//         };
+
+//         await sendOTPEmail(user.email, user.name, otp);
+
+//         return res.status(403).json({
+//           message: "Email not verified. OTP sent again.",
+//           requiresVerification: true,
+//           email: user.email,
+//         });
+//       }
+
+//       if (role && user.role !== role) {
+//         return res
+//           .status(403)
+//           .json({ message: `Access denied. Expected role: ${user.role}` });
+//       }
+
+//       const token = await createAuthTokenAndSaveCookies(user._id, res);
+
+//       return res.status(200).json({
+//         success: true,
+//         message: "Google login successful",
+//         user: {
+//           _id: user._id,
+//           name: user.name,
+//           email: user.email,
+//           role: user.role,
+//         },
+//         token,
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Login error:", error);
+//     res.status(500).json({ message: "Error logging in", error: error.message });
+//   }
+// };
+
 const login = async (req, res) => {
   const { email, password, role, isGoogleLogin, picture, name, phone } = req.body;
 
   try {
-    if (!email || !role) {
-      return res.status(400).json({ message: "Please provide email and role" });
+    if (!email) {
+      return res.status(400).json({ message: "Please provide email" });
     }
 
-    // ----------------- MANUAL LOGIN -----------------
+    // ================= MANUAL LOGIN =================
     if (!isGoogleLogin) {
       if (!password) {
         return res.status(400).json({ message: "Password is required" });
       }
 
       const user = await User.findOne({ email }).select("+password");
+
       if (!user) {
         return res.status(404).json({
           message: "User not registered. Please complete registration.",
@@ -175,11 +442,17 @@ const login = async (req, res) => {
         });
       }
 
+      // 🚫 BLOCK DEACTIVATED USERS
+      if (!user.isActive) {
+        return res.status(403).json({
+          message: "Your account has been deactivated by admin. Please contact support.",
+        });
+      }
 
       if (!user.password) {
-        return res
-          .status(400)
-          .json({ message: "This account was created via Google. Use Google login." });
+        return res.status(400).json({
+          message: "This account was created via Google. Use Google login.",
+        });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
@@ -188,13 +461,12 @@ const login = async (req, res) => {
       }
 
       if (!user.isEmailVerified) {
-        // Resend OTP
         const otp = generateOTP();
         const otpExpiry = getOTPExpiry();
 
         pendingUsers[email] = {
           ...user.toObject(),
-          password: user.password, // keep hashed
+          password: user.password,
           otp,
           otpExpiry,
           isGoogleSignup: false,
@@ -209,10 +481,11 @@ const login = async (req, res) => {
         });
       }
 
+      // Role check (optional / backward compatible)
       if (role && user.role !== role) {
-        return res
-          .status(403)
-          .json({ message: `Access denied. Expected role: ${user.role}` });
+        return res.status(403).json({
+          message: `Access denied. Your role is ${user.role}`,
+        });
       }
 
       const token = await createAuthTokenAndSaveCookies(user._id, res);
@@ -230,12 +503,11 @@ const login = async (req, res) => {
       });
     }
 
-    // ----------------- GOOGLE LOGIN -----------------
+    // ================= GOOGLE LOGIN =================
     else {
       let user = await User.findOne({ email });
 
       if (!user) {
-        // Not registered yet → frontend should redirect to registration
         return res.status(404).json({
           message: "User not registered. Please complete registration.",
           requiresRegistration: true,
@@ -247,14 +519,20 @@ const login = async (req, res) => {
         });
       }
 
+      // 🚫 BLOCK DEACTIVATED USERS
+      if (!user.isActive) {
+        return res.status(403).json({
+          message: "Your account has been deactivated by admin. Please contact support.",
+        });
+      }
+
       if (!user.isEmailVerified) {
-        // Resend OTP
         const otp = generateOTP();
         const otpExpiry = getOTPExpiry();
 
         pendingUsers[email] = {
           ...user.toObject(),
-          password: null, // Google user → no password
+          password: null,
           otp,
           otpExpiry,
           isGoogleSignup: true,
@@ -270,9 +548,9 @@ const login = async (req, res) => {
       }
 
       if (role && user.role !== role) {
-        return res
-          .status(403)
-          .json({ message: `Access denied. Expected role: ${user.role}` });
+        return res.status(403).json({
+          message: `Access denied. Your role is ${user.role}`,
+        });
       }
 
       const token = await createAuthTokenAndSaveCookies(user._id, res);
@@ -291,7 +569,10 @@ const login = async (req, res) => {
     }
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: "Error logging in", error: error.message });
+    return res.status(500).json({
+      message: "Error logging in",
+      error: error.message,
+    });
   }
 };
 

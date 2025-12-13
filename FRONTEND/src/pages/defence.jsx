@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { SLink } from '@/components/SLink';
+import { motion } from "framer-motion";
+
 const features = [
   "DRDO Recognized Vendor",
   "5+ Custom Machines Delivered",
@@ -26,7 +28,7 @@ const cardData = [
   },
 ];
 const projects = [
-   {
+  {
     title: "Customised Thermal Insulated Temperature Controlled Portable ISO 20 Ft. Shipping Container for Power Plant",
     soNumber: "NO204/D1/ESE",
     group: "ESG",
@@ -45,7 +47,7 @@ const projects = [
     soNumber: "S.O No.: N0206/D1/ESE",
     group: "ESG",
     amount: " 8,45,500",
-    pdc: "30 Apr 2019",
+    pdc: "30 Apr 2019",
     images: ["https://res.cloudinary.com/dxrryep5y/image/upload/v1753295699/website_static_media/hybrid.png"],
     description: "Successfully completed the prototype development of Hybrid Mobile Solar Power generation system for R&D(E), Dighi",
     abstract:
@@ -65,7 +67,7 @@ const projects = [
     ],
     description: "Prototype development of Mobile Cubical Mini Power House",
     abstract:
-      "A compact, powerful movable system was designed for easy assembly by just two people. It features a foldable Al 6061 square tube structure, 2 mm thick,with nine 250W semi-flexible polycrystalline solar panels, resulting in a 2.2 kWsystem. Controlled lifting and tilting are managed by gas struts, and allelectrical devices are housed in a 19-inch rack structure. Notably, the entireassembly can be unbolted and reassembled by two unskilled individuals.",
+      "A compact, powerful movable system was designed for easy assembly by just two people. It features a foldable Al 6061 square tube structure, 2 mm thick,with nine 250W semi-flexible polycrystalline solar panels, resulting in a 2.2 kWsystem. Controlled lifting and tilting are managed by gas struts, and allelectrical devices are housed in a 19-inch rack structure. Notably, the entireassembly can be unbolted and reassembled by two unskilled individuals.",
   },
   {
     title: "Supply of Third Arm Support Assembly",
@@ -99,158 +101,114 @@ const projects = [
     pdc: "30 Apr 2021",
     description: "Supply of Miniature Mechanical Clutch Assembly",
     abstract:
-      "The Miniature Clutch Assembly was developed to alleviate the load on the body during steep climbs. Utilizing a ratchet and pulley mechanism, this purely mechanical system has been successfully tested by soldiers, who reported comfortable usage. It is now widely adopted in the exoskeleton domain for military applications.",
+      "The Miniature Clutch Assembly was developed to alleviate the load on the body during steep climbs. Utilizing a ratchet and pulley mechanism, this purely mechanical system has been successfully tested by soldiers, who reported comfortable usage. It is now widely adopted in the exoskeleton domain for military applications.",
   },
   {
     title: "Manufacturing, Integration, Testing & Supply of Multi-Axis Motion Platform",
     soNumber: " N0061/D6/ADS",
     group: "EMSG",
     amount: "₹22,00,000",
-    pdc: "15 Mar 2022",
+    pdc: "15 Mar 2022",
     images: ["https://res.cloudinary.com/dxrryep5y/image/upload/v1753295731/website_static_media/miniature.png",],
-    description: "Supply of Miniature Mechanical Clutch Assembly",
+    description: "Supply of Miniature Mechanical Clutch Assembly",
     abstract:
       "The Miniature Clutch Assembly was designed to reduce the physical load on soldiers while climbing steep altitudes. Utilizing a ratchet and pulley mechanism, this purely mechanical system has undergone successful trials, with soldiers reporting comfortable usage. It is now widely implemented in the exoskeleton domain for military applications.",
   },
-   {
+  {
     title: "Supply and Manufacturing of Planetary Gearbox",
     images: ["https://res.cloudinary.com/dxrryep5y/image/upload/v1753295735/website_static_media/planetary.png",],
     description: "Supply and Manufacturing of Planetary Gearbox",
     abstract:
-      "The planetary gearbox was designed to control the opening and closing of fighter jet flaps for missile launching, completing the operation in just 3 seconds. This rapid action is crucial for stealth mode, minimizing the jets' exposure to enemy radar detection.",
+      "The planetary gearbox was designed to control the opening and closing of fighter jet flaps for missile launching, completing the operation in just 3 seconds. This rapid action is crucial for stealth mode, minimizing the jets' exposure to enemy radar detection.",
   },
-  
-];
 
-const phases = [
-  {
-    name: "CHAFF CUTTER - HAMMER MILL MACHINE",
-    title: "Chaff Cutter - Hammer Mill Machine Efficient Grass Processing Solution",
-    description:
-      "Designed for efficient grass cutting and fertilizer production. With a powerful 750W motor and a compact footprint of 7306.92 mm², it effectively chops and mills biomass, enhancing composting quality. User-friendly and durable, it’s ideal for sustainable agricultural practices.",
-    image: "https://res.cloudinary.com/dxrryep5y/image/upload/v1753295653/website_static_media/Chaff_cutter.png",
-  },
-  {
-    name: "High Shear Powder/Liquid Mixing",
-    title: "High Shear Mixer takes a revolutionary approach to powder/liquid mixing.",
-    description:
-      "The High Shear Mixer (HSM25) efficiently disperses powders into liquids, using a 5.5 kW motor and achieving a flow rate of 3.785 liters per minute. It handles up to 25 kg/h of gums, 90 kg/h of milk proteins, and 40 kg/h.",
-    image: "https://res.cloudinary.com/dxrryep5y/image/upload/v1753295693/website_static_media/high_Shear.png",
-  },
-  {
-    name: "Organic Waste Seprating System",
-    title: "Efficient Organic Waste Separate Processing System",
-    description:
-      "The processing system for organic recyclable materials utilizes a 7.5 kW motor to efficiently handle kitchen waste, raw organic residues, and expired goods in various packaging. It includes shredding and mixing mechanisms, advanced separation technologies, and a control panel.",
-    image: "https://res.cloudinary.com/dxrryep5y/image/upload/v1753295733/website_static_media/organic_waste.png",
-  },
-  {
-    name: "MSW treatment Twin Shaft Crusher cum Shredder AD100",
-    title: "Shredder AD 100 Versatile Waste Processing Solution",
-    description:
-      "The Shredder AD 100 is designed for efficient processing of organic waste, fish waste, plastic waste, and agricultural residues. Its robust construction facilitates effective particle size reduction, enabling the composting of organic materials and the recycling of plastics.",
-    image: "https://res.cloudinary.com/dxrryep5y/image/upload/v1753295764/website_static_media/treatment_Twin.png",
-  },
 ];
 
 const Defence = () => {
-  const [selected, setSelected] = useState(phases[0].name);
-  const [openIndex, setOpenIndex] = useState(null);
-  const currentPhase = phases.find((p) => p.name === selected);
 
+  const [openIndex, setOpenIndex] = useState(null);
   const toggleIndex = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
       {/* Hero Section */}
-      <section
-        className="relative bg-black text-white overflow-hidden h-[500px] bg-cover bg-center"
-        style={{ backgroundImage: "url('/accuimages/welcome-img.png')" }}
+      <motion.section
+        className="relative bg-gradient-to-r from-blue-800 via-blue-900 to-indigo-900 text-white overflow-hidden h-[500px]"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        viewport={{ once: true }}
       >
-        <div className="absolute inset-0 bg-black opacity-60" />
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Engineering Precision for India’s Defence
-          </h1>
-          <p className="text-lg max-w-2xl text-gray-200">
-            Proud partner in national defence innovation — delivering mechanical solutions for DRDO and mission-critical applications.
-          </p>
-          <SLink
-            to="/contact-us"
-            className="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition"
-          >
-            Partner with Us →
-          </SLink>
+        {/* Subtle Glow */}
+        <div className="absolute inset-0">
+          <div className="absolute w-96 h-96 bg-blue-500/30 rounded-full blur-3xl -top-20 -left-20"></div>
+          <div className="absolute w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl bottom-0 right-0"></div>
         </div>
-      </section>
+
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+          <motion.h1
+            className="text-4xl md:text-5xl font-bold mb-4"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            Engineering Precision for India’s Defence
+          </motion.h1>
+          <motion.p
+            className="text-lg max-w-2xl text-gray-200"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+          >
+            Proud partner in national defence innovation — delivering mechanical solutions for DRDO and mission-critical applications.
+          </motion.p>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <SLink
+              to="/contact-us"
+              className="mt-6 inline-block relative overflow-hidden rounded-lg font-semibold py-3 px-6 shadow-lg transition-all duration-300 group"
+            >
+              {/* Background Animation Layer */}
+              <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out"></span>
+
+              {/* Button Text */}
+              <span className="relative z-10 text-white">
+                Partner with Us →
+              </span>
+            </SLink>
+          </motion.div>
+        </div>
+      </motion.section>
+
 
       {/* Features */}
       <div className="bg-white text-black py-10">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-10 text-center px-4">
           {features.map((item, index) => (
-            <div key={index} className="flex items-start gap-3 max-w-xs">
+            <motion.div
+              key={index}
+              className="flex items-start gap-3 max-w-xs"
+              whileHover={{ scale: 1.03, y: -3 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            >
               <FaCheckCircle className="text-blue-500 mt-1" size={20} />
               <span className="text-lg leading-snug">{item}</span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-
-      {/* Timeline Section */}
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-3xl md:text-4xl font-semibold text-center mb-4">
-          Special Purpose Machines
-        </h2>
-        <p className="text-center text-gray-500 mb-12 max-w-2xl mx-auto">
-          Supporting defense parts development from rapid prototyping to full production.
-        </p>
-
-        <div className="flex flex-col md:flex-row gap-12">
-          {/* Selector */}
-          <div className="md:w-1/5 flex md:flex-col gap-6 items-center justify-start">
-            {phases.map((phase) => (
-              <div
-                key={phase.name}
-                className="flex flex-col items-center group cursor-pointer"
-                onClick={() => setSelected(phase.name)}
-              >
-                <div
-                  className={`w-6 h-6 rounded-full border-4 transition-all duration-200 ${
-                    selected === phase.name
-                      ? "bg-blue-600 border-blue-100"
-                      : "bg-white border-gray-300 group-hover:border-blue-400"
-                  }`}
-                />
-                <span
-                  className={`mt-2 text-xs font-semibold text-center ${
-                    selected === phase.name
-                      ? "text-blue-600"
-                      : "text-gray-500 group-hover:text-blue-500"
-                  }`}
-                >
-                  {phase.name}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Timeline Content */}
-          <div className="md:w-4/5 space-y-6">
-            <div className="w-full h-[400px] flex items-center justify-center">
-              <img
-                src={currentPhase.image}
-                alt={currentPhase.title}
-                className="max-h-full max-w-full object-contain rounded-lg shadow-md transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
-              />
-            </div>
-            <h3 className="text-2xl font-bold">{currentPhase.title}</h3>
-            <p className="text-gray-600">{currentPhase.description}</p>
-          </div>
-        </div>
-      </div>
-
       {/* Projects Section */}
       <div className="max-w-6xl mx-auto px-4 py-10">
         <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">
@@ -258,7 +216,14 @@ const Defence = () => {
         </h2>
 
         {projects.map((project, index) => (
-          <div key={index} className="mb-6 border border-blue-300 rounded-lg shadow-md">
+          <motion.div
+            key={index}
+            className="mb-6 border border-blue-300 rounded-lg shadow-md"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.05 }}
+            viewport={{ once: true }}
+          >
             <button
               className="w-full text-left p-4 bg-blue-100 hover:bg-blue-200"
               onClick={() => toggleIndex(index)}
@@ -272,7 +237,12 @@ const Defence = () => {
             </button>
 
             {openIndex === index && (
-              <div className="p-4">
+              <motion.div
+                className="p-4"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ duration: 0.4 }}
+              >
                 <div className="mb-4 text-sm">
                   <p><strong>S.O No:</strong> {project.soNumber}</p>
                   <p><strong>Group:</strong> {project.group}</p>
@@ -311,46 +281,61 @@ const Defence = () => {
                   <h4 className="font-semibold text-lg">Abstract:</h4>
                   <p className="text-gray-700">{project.abstract}</p>
                 </div>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
-      <div className="bg-blue-600 text-white py-24 text-center px-4">
-              <h1 className="text-4xl md:text-4xl font-bold mb-8">
-                Precision. Performance. For Defence—Together.
-              </h1>
-              <SLink
-                to="/get-quote"
-                className="bg-white text-blue-600 font-semibold py-3 px-6 rounded-md hover:bg-gray-100 transition duration-300"
-              >
-                Get A Defence Quote Now
-              </SLink>
-            </div>
-             {/* Card Section */}
+      <motion.div
+        className="bg-blue-600 text-white py-24 text-center px-4"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+      >
+        <h1 className="text-4xl md:text-4xl font-bold mb-8">
+          Precision. Performance. For Defence—Together.
+        </h1>
+        <SLink
+          to="/get-quote"
+          className="bg-white text-blue-600 font-semibold py-3 px-6 rounded-md hover:bg-gray-100 transition duration-300"
+        >
+          Get A Defence Quote Now
+        </SLink>
+      </motion.div>
+      {/* Card Section */}
       <section className="max-w-screen-lg mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {cardData.map((card, index) => (
-            <div
+            <motion.div
               key={index}
-              className="bg-white rounded-2xl shadow-md border hover:shadow-lg transition"
+              className="relative bg-white rounded-2xl shadow-md border border-transparent hover:border-blue-500 overflow-hidden transition-all duration-500 group"
+              whileHover={{ y: -6, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 220, damping: 18 }}
             >
-              <div className="flex justify-center items-center h-64 bg-white">
+              {/* Animated Border Lines */}
+              <span className="absolute inset-0 border-2 border-transparent rounded-2xl group-hover:border-blue-500 transition-all duration-500"></span>
+              <span className="absolute inset-0 rounded-2xl group-hover:shadow-[0_0_15px_rgba(37,99,235,0.5)] transition-all duration-500"></span>
+
+              {/* Image */}
+              <div className="flex justify-center items-center h-64 bg-white relative z-10">
                 <img
                   src={card.image}
                   alt={card.title}
                   className="max-h-full max-w-full object-contain"
                 />
               </div>
-              <div className="px-4 pb-4">
+
+              {/* Text */}
+              <div className="px-4 pb-4 relative z-10">
                 <h3 className="text-lg font-semibold text-blue-700 mb-1">{card.title}</h3>
                 <p className="text-gray-600">{card.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };
 

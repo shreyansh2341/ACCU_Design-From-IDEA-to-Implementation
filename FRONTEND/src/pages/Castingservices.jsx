@@ -43,7 +43,7 @@ const CastingServices = () => {
                     </h1>
                     <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-blue-100">
                         At{" "}
-                        <span className="font-semibold text-cyan-300">Accu DESIGN</span>, we
+                        <span className="font-semibold text-cyan-300">ACCU DESIGN</span>, we
                         engineer precision and performance into every casting, helping you
                         bring bold ideas to life with speed and accuracy.
                     </p>

@@ -4,7 +4,7 @@ import { SLink } from '@/components/SLink';
 const GearManufacturingPage = () => {
   return (
     <div className="w-full overflow-x-hidden">
-     {/* Header Section */}
+      {/* Header Section */}
       <section className="w-full h-[46vh] bg-[url('https://res.cloudinary.com/dxrryep5y/image/upload/v1753295818/website_static_media/gear1.png')] bg-cover bg-center bg-black bg-opacity-70 bg-blend-darken flex items-center justify-center">
         <div className="text-white text-center text-2xl md:text-4xl font-semibold">
           Gear Manufacturing</div>
@@ -21,7 +21,7 @@ const GearManufacturingPage = () => {
               { name: "Fabrication", path: "/fabrication" },
               { name: "3D Printing", path: "/3d-printing" },
               { name: "Casting", path: "/casting" },
-              { name: "Gear Manufacturing", path: "/gear" },
+              // { name: "Gear Manufacturing", path: "/gear" },
               { name: "Bending", path: "/bending" },
               { name: "Wire Cutting", path: "/cutting" },
             ].map((btn, index) => (
@@ -34,7 +34,7 @@ const GearManufacturingPage = () => {
           </div>
 
           {/* Left Image */}
-          <SLink to="/">
+          <SLink to="/contact-us">
             <img
               src="https://res.cloudinary.com/dxrryep5y/image/upload/v1753295826/website_static_media/Group_48095677_1.png"
               alt="Left Side"
@@ -65,38 +65,35 @@ const GearManufacturingPage = () => {
           </ul>
 
           {/* Features Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8 w-full">
-            {[
-              { label: "Affordable Pricing", icon: "₹" },
-              { label: "24x7 Support", icon: "🕒" },
-              { label: "Certified & Insured", icon: "✅" },
-              { label: "Expert Technicians", icon: "🛠️" },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="
-                          flex flex-col items-center text-center 
-                          p-6 bg-gray rounded-xl shadow-sm 
-                          hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] 
-                          hover:scale-105 
-                          transition-transform duration-300
-                          cursor-pointer
-                        "
-              >
-                <div className="text-5xl mb-3">{feature.icon}</div>
-                <span className="font-semibold text-gray-800">{feature.label}</span>
+          <div className="mt-8 w-full">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+              {[
+                { label: "Affordable Pricing", icon: "₹" },
+                { label: "24x7 Support", icon: "🕒" },
+                { label: "Certified & Insured", icon: "✅" },
+                { label: "Expert Technicians", icon: "🛠️" },
+              ].map((feature, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center text-center p-6 bg-gray rounded-xl shadow-sm hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:scale-105 transition-transform duration-300 cursor-pointer"
+                >
+                  <div className="text-5xl mb-3">{feature.icon}</div>
+                  <span className="font-semibold text-gray-800">{feature.label}</span>
+                </div>
+              ))}
+
+              {/* Learn More Button */}
+              <div className="col-span-full flex justify-center mt-4">
+                <SLink
+                  to="/GearManufacturing"
+                  className="inline-block px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition duration-300 ease-in-out"
+                >
+                  Learn More
+                </SLink>
               </div>
-            ))}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center mb-8">
-        <SLink
-          to="/GearManufacturing"
-          className="inline-block px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition duration-300 ease-in-out"
-        >
-          Learn More
-        </SLink>
       </div>
     </div>
   );

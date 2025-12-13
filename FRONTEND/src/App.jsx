@@ -38,7 +38,6 @@ import UpdateBlog from './dashboard/Updateblog.jsx'
 import UpdatePost from './dashboard/UpdatePost.jsx'
 import UpdateReview from './dashboard/UpdateReview.jsx'
 import CreateBlog from './dashboard/createblog.jsx';
-import AutoGenerateBlog from './dashboard/AutoGenerateBlog.jsx';
 import CreatePost from './dashboard/createPost.jsx';
 import CreateReview from './dashboard/createTestimonials.jsx';
 import Myblogs from './dashboard/myblogs.jsx';
@@ -51,6 +50,7 @@ import MediaGallery from './pages/MediaGallery.jsx'
 import Aerospace from './pages/aerospace.jsx'
 import Biofuel from './pages/biofuel.jsx'
 import SolarBattery from './pages/SolarBattery.jsx'
+import SolarBatteryLearnMore from './pages/SolarBatteryLearnMore.jsx'
 import Collab from './pages/Collab.jsx';
 import Castingservices from './pages/Castingservices.jsx';
 import GearManufacturing from './pages/GearManufacturing.jsx';
@@ -70,6 +70,13 @@ import DesignTipsReduceLeadTime from './pages/DesignTipsReduceLeadTime.jsx';
 import LoginSuccess from '@/pages/LoginSuccess.jsx';
 import PreRegister from "./pages/PreRegister";
 import VerifyOtp from './components/VerifyOtp.jsx';
+import FDMPage from './pages/FDMPage.jsx'
+import SLAPage from './pages/SLAPage.jsx'
+import SLSPage from './pages/SLSPage.jsx'
+import MLSAPage from './pages/MLSAPage.jsx'
+import DMLSPage from './pages/DMLSPage.jsx'
+import Epcrole from './pages/Epcrole.jsx'
+import Epcabout from './pages/Epcabout.jsx'
 import MyProfile from "./user-dashboard/MyProfile.jsx";
 import AdminOrders from "@/admin-dashboard/AdminOrders.jsx";
 import AdminOrderDetail from "@/admin-dashboard/AdminOrderDetail.jsx";
@@ -77,8 +84,7 @@ import AdminUsers from "@/admin-dashboard/AdminUsers.jsx";
 import AdminChats from "./admin-dashboard/AdminChats.jsx";
 import AdminCancelRequests from "./admin-dashboard/AdminCancelRequests.jsx";
 import AdminOrderReviews from './admin-dashboard/AdminOrderReviews.jsx';
-
-
+import RoleProtectedRoute from './components/RoleProtectedRoute.jsx';
 function App() {
 
   const location = useLocation();
@@ -92,6 +98,7 @@ function App() {
       </>)}
       {/* Defining routes */}
       <Routes>
+        {/* ================= PUBLIC ROUTES ================= */}
         <Route exact path="/" element={<Home />} />
         <Route exact path="/our-services" element={<OurServices />} />
         <Route exact path="/machining" element={<MachiningPage />} />
@@ -114,32 +121,229 @@ function App() {
         <Route exact path="/contact-us" element={<Contact />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
-        <Route exact path="/admin-dashboard" element={<AdminDashboard />} />
-        <Route path="/vendor-dashboard" element={<VendorDashboard />} />
-        <Route path="/vendor-dashboard/orders" element={<VendorOrders />} />
-        <Route path="/vendor-dashboard/chats" element={<VendorChats />} />
-        <Route path="/vendor-dashboard/reviews" element={<VendorReviews />} />
-        <Route path="/vendor-dashboard/notifications" element={<VendorNotifications />} />
-        <Route path="/vendor-dashboard/profile" element={<VendorProfile />} />
-        <Route path="/user-dashboard" element={<UserDashboard />} />
-        <Route path="/dashboard" element={<DashboardRouter />} />
-        <Route exact path="/my-blogs" element={<Myblogs />} />
-        <Route exact path="/all-posts" element={<AllPosts />} />
-        <Route exact path="/get-quote" element={<GetQuote />} />
-        <Route exact path="/create-blog" element={<CreateBlog />} />
-        <Route exact path="/auto-generate" element={<AutoGenerateBlog />} />
-        <Route exact path="/create-post" element={<CreatePost />} />
-        <Route exact path="/create-review-post" element={<CreateReview />} />
-        <Route exact path="/update-blog/:id" element={<UpdateBlog />} />
-        <Route exact path="/update-post/:id" element={<UpdatePost />} />
-        <Route exact path="/update-review/:id" element={<UpdateReview />} />
-        <Route exact path="/media-gallery" element={<MediaGallery />} />
-        <Route path="/all-testimonials" element={<AllTestimonials />} />
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/media/:id" element={<MediaDetails />} />
+        <Route path="/media-gallery" element={<MediaGallery />} />
+        <Route path="/get-quote" element={<GetQuote />} />
+        <Route path="/login-success" element={<LoginSuccess />} />
+        <Route path="/pre-register" element={<PreRegister />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+
+        {/* ================= DASHBOARD ROUTER ================= */}
+        <Route
+          path="/dashboard"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin", "user", "vendor"]}>
+              <DashboardRouter />
+            </RoleProtectedRoute>
+          }
+        />
+
+        {/* ================= ADMIN ONLY ================= */}
+        <Route
+          path="/admin-dashboard"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage-orders"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AdminOrders />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/order/:id"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AdminOrderDetail />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage-users"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AdminUsers />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage-chats"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AdminChats />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage-cancellations"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AdminCancelRequests />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/reviews"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AdminOrderReviews />
+            </RoleProtectedRoute>
+          }
+        />
+
+        {/* ===== ADMIN CMS ===== */}
+        <Route
+          path="/my-blogs"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <Myblogs />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-posts"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AllPosts />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-testimonials"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <AllTestimonials />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-blog"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <CreateBlog />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-post"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <CreatePost />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-review-post"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <CreateReview />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/update-blog/:id"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <UpdateBlog />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/update-post/:id"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <UpdatePost />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/update-review/:id"
+          element={
+            <RoleProtectedRoute allowedRoles={["admin"]}>
+              <UpdateReview />
+            </RoleProtectedRoute>
+          }
+        />
+
+        {/* ================= USER ONLY ================= */}
+        <Route
+          path="/user-dashboard"
+          element={
+            <RoleProtectedRoute allowedRoles={["user"]}>
+              <UserDashboard />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-profile"
+          element={
+            <RoleProtectedRoute allowedRoles={["user"]}>
+              <MyProfile />
+            </RoleProtectedRoute>
+          }
+        />
+
+        {/* ================= VENDOR ONLY ================= */}
+        <Route
+          path="/vendor-dashboard"
+          element={
+            <RoleProtectedRoute allowedRoles={["vendor"]}>
+              <VendorDashboard />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor-dashboard/orders"
+          element={
+            <RoleProtectedRoute allowedRoles={["vendor"]}>
+              <VendorOrders />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor-dashboard/chats"
+          element={
+            <RoleProtectedRoute allowedRoles={["vendor"]}>
+              <VendorChats />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor-dashboard/reviews"
+          element={
+            <RoleProtectedRoute allowedRoles={["vendor"]}>
+              <VendorReviews />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor-dashboard/notifications"
+          element={
+            <RoleProtectedRoute allowedRoles={["vendor"]}>
+              <VendorNotifications />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route
+          path="/vendor-dashboard/profile"
+          element={
+            <RoleProtectedRoute allowedRoles={["vendor"]}>
+              <VendorProfile />
+            </RoleProtectedRoute>
+          }
+        />
+
+        {/* ================= REMAINING PUBLIC SERVICE PAGES ================= */}
         <Route path="/aerospace" element={<Aerospace />} />
         <Route path="/biofuel" element={<Biofuel />} />
         <Route path="/SolarBattery" element={<SolarBattery />} />
+        <Route path="/SolarBatteryLearnMore" element={<SolarBatteryLearnMore />} />
         <Route path="/Collab" element={<Collab />} />
         <Route path="/Castingservices" element={<Castingservices />} />
         <Route path="/GearManufacturing" element={<GearManufacturing />} />
@@ -156,18 +360,15 @@ function App() {
         <Route path="/RapidVsTraditional" element={<RapidVsTraditional />} />
         <Route path="/PrecisionMachinedParts" element={<PrecisionMachinedParts />} />
         <Route path="/DesignTipsReduceLeadTime" element={<DesignTipsReduceLeadTime />} />
-        <Route path="/login-success" element={<LoginSuccess />} />
-        <Route path="/pre-register" element={<PreRegister />} />
-        <Route path="/verify-otp" element={<VerifyOtp />} />
-        <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/manage-orders" element={<AdminOrders />} />
-        <Route path="/admin/order/:id" element={<AdminOrderDetail />} />
-        <Route path="/manage-users" element={<AdminUsers />} />
-        <Route path="/manage-chats" element={<AdminChats />} />
-        <Route path="/manage-cancellations" element={<AdminCancelRequests />} />
-        <Route path="/admin/reviews" element={<AdminOrderReviews />} />
-
+        <Route path="/FDMPage" element={<FDMPage />} />
+        <Route path="/SLAPage" element={<SLAPage />} />
+        <Route path="/SLSPage" element={<SLSPage />} />
+        <Route path="/MLSAPage" element={<MLSAPage />} />
+        <Route path="/DMLSPage" element={<DMLSPage />} />
+        <Route path="/Epcrole" element={<Epcrole />} />
+        <Route path="/Epcabout" element={<Epcabout />} />
       </Routes>
+
       <Toaster />
       {!hideNavbarFooter && <Footer />}
     </div>

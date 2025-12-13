@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SLink } from '@/components/SLink';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { FaCheckCircle } from 'react-icons/fa';
+import toleranceChartPdf from '@/pdf/CNC Tolerance Standards - Accu Design.pdf';
 
 const features = [
   "Precision Engineering",
@@ -15,75 +16,66 @@ const features = [
 const finishingOptions = [
   {
     name: "Chem Film",
-    image: "/images/chem-film.jpg",
     materials: "Aluminum",
     colors: "Clear, gold",
     appliedWith: "Media Blasting, Tumbling, Type II Anodizing* Type III Anodizing with PTFE*",
   },
   {
     name: "Anodizing",
-    image: "/images/anodizing.jpg",
     materials: "Aluminum",
     colors: "Clear, black, grey, red, blue, gold",
     appliedWith: "Media Blasting, Tumbling, Chem film*",
   },
   {
     name: "Black Oxide",
-    image: "/images/black-oxide.jpg",
     materials: "Steel, Stainless Steel",
     colors: "Black",
     appliedWith: "Media Blasting, Tumbling, Passivation",
   },
   {
     name: "Electroless Nickel",
-    image: "/images/electroless-nickel.jpg",
     materials: "Aluminum, Steel",
     colors: "—",
     appliedWith: "Media Blasting, Tumbling",
   },
   {
     name: "Zinc Plating",
-    image: "/images/zinc-plating.jpg",
     materials: "Steel, Stainless Steel",
     colors: "Clear, blue, yellow, black",
     appliedWith: "Media Blasting, Tumbling",
   },
   {
     name: "Passivation",
-    image: "/images/passivation.jpg",
     materials: "Stainless Steel",
     colors: "Natural",
     appliedWith: "Tumbling, Black Oxide",
   },
   {
     name: "Powder Coating",
-    image: "/images/powder-coating.jpg",
     materials: "Aluminum, Steel",
     colors: "Various (customizable)",
     appliedWith: "Tumbling, Anodizing*",
   },
   {
     name: "Bead Blasting",
-    image: "/images/bead-blasting.jpg",
     materials: "Aluminum, Steel, Stainless Steel",
     colors: "Matte texture",
     appliedWith: "Anodizing, Chem Film",
   },
   {
     name: "Polishing",
-    image: "/images/polishing.jpg",
     materials: "Aluminum, Stainless Steel",
     colors: "Bright, reflective",
     appliedWith: "Tumbling, Electropolishing",
   },
   {
     name: "Brushed Finish",
-    image: "/images/brushed-finish.jpg",
     materials: "Aluminum, Stainless Steel",
     colors: "Metallic lines",
     appliedWith: "Anodizing, Powder Coating",
   },
 ];
+
 
 const faqData = [
   {
@@ -126,7 +118,7 @@ const articles = [
     link: "RapidVsTraditional",
   },
   {
-    image: "/accuimages/machine.jpeg",
+    image: "https://res.cloudinary.com/dxrryep5y/image/upload/v1764183078/website_static_media/precision_macchining_gempng.png",
     title: "Precision Machined Parts: Accu Desidn Comprehensive Guide",
     link: "PrecisionMachinedParts",
   },
@@ -185,7 +177,7 @@ const Machine = () => {
             Custom CNC Machining Services
           </h1>
           <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-blue-100">
-            At <span className="font-semibold text-cyan-300">Accu Design</span>,Accelerate prototyping, product development and production with a faster, easier way to get precision CNC machined parts with tolerances as tight as ±0.0001 inch.
+            At <span className="font-semibold text-cyan-300">ACCU DESIGN</span>,Accelerate prototyping, product development and production with a faster, easier way to get precision CNC machined parts with tolerances as tight as ±0.0001 inch.
             CNC parts manufactured as fast as 1 day with 95.4% of orders delivered on-time and in-full.
           </p>
           <div className="mt-8">
@@ -322,7 +314,7 @@ const Machine = () => {
         </p>
         <div className="flex justify-center mt-8">
           <a
-            href="https://res.cloudinary.com/dxrryep5y/image/upload/v1753692631/website_static_media/CNC_Tolerance_Standards_-_Accu_Design.pdf"
+            href={toleranceChartPdf}
             download
             className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition inline-block text-center"
           >
@@ -346,10 +338,7 @@ const Machine = () => {
             <tbody>
               {finishingOptions.map((item, index) => (
                 <tr key={index} className="border-b border-gray-200">
-                  <td className="flex items-center gap-4 p-4">
-                    <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
-                    <span className="text-teal-600 font-medium">{item.name}</span>
-                  </td>
+                  <td className="p-4 text-blue-600 font-medium">{item.name}</td>
                   <td className="p-4 text-gray-700">{item.materials}</td>
                   <td className="p-4 text-gray-700">{item.colors}</td>
                   <td className="p-4 text-gray-700">{item.appliedWith}</td>
@@ -359,6 +348,7 @@ const Machine = () => {
           </table>
         </div>
       </div>
+
       {/* FAQ SECTION */}
       <section className="py-12 px-2 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-10">CNC Machining Service FAQs</h2>

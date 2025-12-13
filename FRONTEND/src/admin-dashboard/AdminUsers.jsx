@@ -103,6 +103,25 @@ const AdminUsers = () => {
     setCurrentPage(page);
   };
 
+  const handleDeleteUser = async (userId) => {
+    try {
+      const { data } = await axios.delete(
+        `${REACT_APP_BACKEND_URL}/api/admin/users/${userId}`,
+        { withCredentials: true }
+      );
+
+      toast.success("User deleted successfully");
+
+      setUsers((prev) => prev.filter((u) => u._id !== userId));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to delete user"
+      );
+    }
+  };
+
+
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-white via-[#e8f3fc] to-[#d9e9fb]">
       <AdminOpsSidebar />
@@ -156,9 +175,8 @@ const AdminUsers = () => {
                             {initials}
                           </div>
                           <span
-                            className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white ${
-                              u.isActive ? "bg-emerald-400" : "bg-red-400"
-                            }`}
+                            className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white ${u.isActive ? "bg-emerald-400" : "bg-red-400"
+                              }`}
                           />
                         </div>
 
@@ -180,11 +198,10 @@ const AdminUsers = () => {
                         </span>
 
                         <span
-                          className={`px-2 py-1 rounded-full text-[11px] border font-medium ${
-                            u.isActive
-                              ? "bg-green-50 text-green-700 border-green-200"
-                              : "bg-red-50 text-red-700 border-red-200"
-                          }`}
+                          className={`px-2 py-1 rounded-full text-[11px] border font-medium ${u.isActive
+                            ? "bg-green-50 text-green-700 border-green-200"
+                            : "bg-red-50 text-red-700 border-red-200"
+                            }`}
                         >
                           {u.isActive ? "Active" : "Inactive"}
                         </span>
@@ -213,14 +230,23 @@ const AdminUsers = () => {
                           onClick={() => handleToggleActive(u._id)}
                           className={`mt-3 w-full text-xs font-semibold px-3 py-1.5 rounded-xl border
                                     flex items-center justify-center transition
-                                    ${
-                                      u.isActive
-                                        ? "border-red-200 text-red-600 bg-red-50/80 hover:bg-red-100 hover:border-red-300 hover:shadow-[0_8px_18px_rgba(248,113,113,0.55)]"
-                                        : "border-green-200 text-green-600 bg-green-50/80 hover:bg-green-100 hover:border-green-300 hover:shadow-[0_8px_18px_rgba(34,197,94,0.55)]"
-                                    }
+                                    ${u.isActive
+                              ? "border-red-200 text-red-600 bg-red-50/80 hover:bg-red-100 hover:border-red-300 hover:shadow-[0_8px_18px_rgba(248,113,113,0.55)]"
+                              : "border-green-200 text-green-600 bg-green-50/80 hover:bg-green-100 hover:border-green-300 hover:shadow-[0_8px_18px_rgba(34,197,94,0.55)]"
+                            }
                                     hover:-translate-y-[1px] active:translate-y-0 active:shadow-md`}
                         >
                           {u.isActive ? "Deactivate" : "Activate"}
+                        </button>
+                        <button
+                          onClick={() => handleDeleteUser(u._id)}
+                          className="mt-2 w-full text-xs font-semibold px-3 py-1.5 rounded-xl border
+             border-red-300 text-red-700 bg-red-50/80
+             hover:bg-red-100 hover:border-red-400
+             hover:shadow-[0_8px_18px_rgba(239,68,68,0.55)]
+             transition hover:-translate-y-[1px]"
+                        >
+                          Delete User
                         </button>
                       </div>
                     </div>
@@ -238,11 +264,10 @@ const AdminUsers = () => {
                     onClick={() => handlePageChange(safePage - 1)}
                     disabled={safePage === 1}
                     className={`px-2 py-1 rounded-full border
-                               ${
-                                 safePage === 1
-                                   ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                                   : "text-blue-600 border-blue-300 hover:bg-blue-50 hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0"
-                               } transition`}
+                               ${safePage === 1
+                        ? "text-gray-400 border-gray-200 cursor-not-allowed"
+                        : "text-blue-600 border-blue-300 hover:bg-blue-50 hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0"
+                      } transition`}
                   >
                     Prev
                   </button>
@@ -254,11 +279,10 @@ const AdminUsers = () => {
                         key={page}
                         onClick={() => handlePageChange(page)}
                         className={`w-7 h-7 rounded-full text-xs font-semibold border
-                                    ${
-                                      isActive
-                                        ? "bg-blue-600 text-white border-blue-600 shadow-[0_6px_16px_rgba(37,99,235,0.7)]"
-                                        : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50 hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0"
-                                    } transition`}
+                                    ${isActive
+                            ? "bg-blue-600 text-white border-blue-600 shadow-[0_6px_16px_rgba(37,99,235,0.7)]"
+                            : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50 hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0"
+                          } transition`}
                       >
                         {page}
                       </button>
@@ -268,11 +292,10 @@ const AdminUsers = () => {
                     onClick={() => handlePageChange(safePage + 1)}
                     disabled={safePage === totalPages}
                     className={`px-2 py-1 rounded-full border
-                               ${
-                                 safePage === totalPages
-                                   ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                                   : "text-blue-600 border-blue-300 hover:bg-blue-50 hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0"
-                               } transition`}
+                               ${safePage === totalPages
+                        ? "text-gray-400 border-gray-200 cursor-not-allowed"
+                        : "text-blue-600 border-blue-300 hover:bg-blue-50 hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0"
+                      } transition`}
                   >
                     Next
                   </button>

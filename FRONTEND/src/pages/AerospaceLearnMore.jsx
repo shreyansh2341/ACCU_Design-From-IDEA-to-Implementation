@@ -63,12 +63,12 @@ const AerospaceLearnMore = () => {
             Ready to discuss your aerospace project? Contact us today to learn
             how we can help turn your vision into reality.
           </p>
-          <a
-             href="contact-us"
+          <SLink
+             to="/contact-us"
             className="inline-block bg-sky-700 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-sky-800 transition"
           >
             Contact Us →
-          </a>
+          </SLink>
         </div>
       </div>
     </section>

@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthProvider.jsx";
 import AdminSidebar from "@/dashboard/Sidebar.jsx";
 
 // Your existing admin components
-import MyProfile from "@/user-dashboard/MyProfile.jsx";
+// import MyProfile from "@/user-dashboard/MyProfile.jsx";
 import CreateBlog from "@/dashboard/createblog.jsx";
 import AutoGenerateBlog from "@/dashboard/AutoGenerateBlog.jsx";
 import CreatePost from "@/dashboard/createPost.jsx";
